@@ -1,5 +1,6 @@
 // Initialize your app
-var myApp = new Framework7();
+var myApp = new Framework7({
+});
 
 // Export selectors engine
 var $$ = Dom7;
@@ -10,39 +11,51 @@ var mainView = myApp.addView('.view-main', {
     dynamicNavbar: true
 });
 
-// Callbacks to run specific code for specific pages, for example for About page:
-myApp.onPageInit('about', function (page) {
+var settings = JSON.parse('{"positiveKeywords" : "", "negativeKewwords": "", "category": "default", "place": "", "template": "" }');
+if(typeof(Storage)!=="undefined"){
+    localStorage.setItem("settings",settings);
+}
+
+myApp.onPageInit('setting', function (page) {
     // run createContentPage func after link was clicked
-    $$('.create-page').on('click', function () {
-        createContentPage();
-    });
+    var formData = myApp.formToJSON('#settings-form');
+    console.log(JSON.stringify(formData));
 });
 
-// Generate dynamic page
-var dynamicPageIndex = 0;
-function createContentPage() {
-	mainView.router.loadContent(
-        '<!-- Top Navbar-->' +
-        '<div class="navbar">' +
-        '  <div class="navbar-inner">' +
-        '    <div class="left"><a href="#" class="back link"><i class="icon icon-back"></i><span>Back</span></a></div>' +
-        '    <div class="center sliding">Dynamic Page ' + (++dynamicPageIndex) + '</div>' +
-        '  </div>' +
-        '</div>' +
-        '<div class="pages">' +
-        '  <!-- Page, data-page contains page name-->' +
-        '  <div data-page="dynamic-pages" class="page">' +
-        '    <!-- Scrollable page content-->' +
-        '    <div class="page-content">' +
-        '      <div class="content-block">' +
-        '        <div class="content-block-inner">' +
-        '          <p>Here is a dynamic page created on ' + new Date() + ' !</p>' +
-        '          <p>Go <a href="#" class="back">back</a> or go to <a href="services.html">Services</a>.</p>' +
-        '        </div>' +
-        '      </div>' +
-        '    </div>' +
-        '  </div>' +
-        '</div>'
-    );
-	return;
+var isLogin = false;
+if(!isLogin){
+    //myApp.popup('.popup-login');
+    myApp.loginScreen();
+}
+
+$$('#login').on('click', function(){
+    isLogin = true;
+    $$('#login-close').click();
+});
+
+var projectsTemplate = $$('script#projects').html();
+var compiledProjectsTemplate = Template7.compile(projectsTemplate);
+var ptrContent = $$('.pull-to-refresh-content');
+
+ptrContent.on('refresh', function (e) {
+    setTimeout(function () {
+
+        ptrContent.find('.swiper-container')
+            .css('visibility', 'hidden')
+            .css('height', '0');
+
+        var itemHTML = compiledProjectsTemplate({
+                data: [{id: Math.random(), title: Math.random().toString(36).replace(/[^a-z]+/g, "").substr(0, 5)},{id: Math.random(),title: Math.random().toString(36).replace(/[^a-z]+/g, "").substr(0, 5)}]}
+                );
+
+        ptrContent.append(itemHTML);
+        var slider = new Swiper('.swiper-container');
+
+        myApp.pullToRefreshDone();
+    }, 2000);
+});
+
+function apply(projectId){
+    myApp.popup('.popup-apply');
+    console.log(projectId);
 }
