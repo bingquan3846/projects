@@ -26,7 +26,8 @@ var pageNum = 0;
 
 
 // login
-var isLogin = false;
+var isLogin = true;
+var uid = 12113;
 if(!isLogin){
     //myApp.popup('.popup-login');
     myApp.loginScreen();
