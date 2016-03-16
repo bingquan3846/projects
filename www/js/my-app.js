@@ -134,35 +134,38 @@ $$('#settings-form').on('submitted', function (e) {
 });
 
 function initKeywordsForm(){
-    var pKeywords = JSON.parse(myApp.ls['f7form-positiveKeywords']);
-    var nKeywords = JSON.parse(myApp.ls['f7form-negativeKeywords']);
+    if(myApp.ls['f7form-positiveKeywords']){
+        var pKeywords = JSON.parse(myApp.ls['f7form-positiveKeywords']);
+        if(pKeywords.positive){
+            for( i = 0; i < pKeywords.positive.length; i++){
+                var target = 'positive';
+                var liHtml = '<li class="swipeout"> <label class="label-checkbox item-content swipeout-content"><input type="checkbox" name="' + target + '" value="'+ pKeywords.positive[i] + '" checked="true"><div class="item-media"><i class="icon icon-form-checkbox"></i></div><div class="item-inner"><div class="item-title"> ' + pKeywords.positive[i] + ' </div></div></label>       <div class="swipeout-actions-right"> <a href="#" class="swipeout-delete">löschen</a></div></li>'
+                $$('#' + target + 'List').append(liHtml);
+            }
+        }
+    }
 
-    if(pKeywords.positive){
-        for( i = 0; i < pKeywords.positive.length; i++){
-            var target = 'positive';
-            var liHtml = '<li class="swipeout"> <label class="label-checkbox item-content swipeout-content"><input type="checkbox" name="' + target + '" value="'+ pKeywords.positive[i] + '" checked="true"><div class="item-media"><i class="icon icon-form-checkbox"></i></div><div class="item-inner"><div class="item-title"> ' + pKeywords.positive[i] + ' </div></div></label>       <div class="swipeout-actions-right"> <a href="#" class="swipeout-delete">löschen</a></div></li>'
-            $$('#' + target + 'List').append(liHtml);
+    if(myApp.ls['f7form-negativeKeywords']){
+        var nKeywords = JSON.parse(myApp.ls['f7form-negativeKeywords']);
+        if(nKeywords.negative){
+            for( i = 0; i < nKeywords.negative.length; i++){
+                var target = 'negative';
+                var liHtml = '<li class="swipeout"> <label class="label-checkbox item-content swipeout-content"><input type="checkbox" name="' + target + '" value="'+ nKeywords.negative[i] + '" checked="true"><div class="item-media"><i class="icon icon-form-checkbox"></i></div><div class="item-inner"><div class="item-title"> ' + nKeywords.negative[i] + ' </div></div></label>       <div class="swipeout-actions-right"> <a href="#" class="swipeout-delete">löschen</a></div></li>'
+                $$('#' + target + 'List').append(liHtml);
+            }
         }
     }
-    if(nKeywords.negative){
-        for( i = 0; i < nKeywords.negative.length; i++){
-            var target = 'negative';
-            var liHtml = '<li class="swipeout"> <label class="label-checkbox item-content swipeout-content"><input type="checkbox" name="' + target + '" value="'+ nKeywords.negative[i] + '" checked="true"><div class="item-media"><i class="icon icon-form-checkbox"></i></div><div class="item-inner"><div class="item-title"> ' + nKeywords.negative[i] + ' </div></div></label>       <div class="swipeout-actions-right"> <a href="#" class="swipeout-delete">löschen</a></div></li>'
-            $$('#' + target + 'List').append(liHtml);
-        }
-    }
+
 }
 
-$$('input[name="addKeyword"]').keypress(function(e){
+$$('input[name="addKeyword"]').blur(function(e){
     var key = e.which || e.keyCode;
-    console.log(window.localStorage);
-    if(key == 13){
-        var target = $$(this).data('target');
-        var liHtml = '<li class="swipeout"> <label class="label-checkbox item-content swipeout-content"><input type="checkbox" name="' + target + '" value="'+ $$(this).val() + '" checked="true"><div class="item-media"><i class="icon icon-form-checkbox"></i></div><div class="item-inner"><div class="item-title"> ' + $$(this).val() + ' </div></div></label>       <div class="swipeout-actions-right"> <a href="#" class="swipeout-delete">löschen</a></div></li>'
-        $$('#' + target + 'List').append(liHtml);
-        $$(this).val('');
-        myApp.formStoreData(target+'Keywords', myApp.formToJSON ('#'+target+'Keywords'));
-    }
+    var target = $$(this).data('target');
+    var liHtml = '<li class="swipeout"> <label class="label-checkbox item-content swipeout-content"><input type="checkbox" name="' + target + '" value="'+ $$(this).val() + '" checked="true"><div class="item-media"><i class="icon icon-form-checkbox"></i></div><div class="item-inner"><div class="item-title"> ' + $$(this).val() + ' </div></div></label>       <div class="swipeout-actions-right"> <a href="#" class="swipeout-delete">löschen</a></div></li>'
+    $$('#' + target + 'List').append(liHtml);
+    $$(this).val('');
+    myApp.formStoreData(target+'Keywords', myApp.formToJSON ('#'+target+'Keywords'));
+
 
 });
 
