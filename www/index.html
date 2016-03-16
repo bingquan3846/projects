@@ -36,42 +36,414 @@
       <div class="view view-main">
         <!-- Top Navbar-->
         <div class="navbar theme-white ">
-          <div class="navbar-inner">
+          <div data-page='index' class="navbar-inner">
             <!-- We have home navbar without left link-->
+            <div class="left"><a href="#" class="link" onclick="showWishlist()"><i class="fa fa-thumb-tack"></i></a></div>
             <div class="center sliding"><img src="img/freelancermap_logo.svg" width="128"/> </div>
             <div class="right">
-              <!-- Right link contains only icon - additional "icon-only" class--><a href="setting.html" class="item-link"> <i class="fa fa-cog"></i></a>
+              <!-- Right link contains only icon - additional "icon-only" class--><a href="#setting" class="item-link"> <i class="fa fa-cog"></i></a>
             </div>
           </div>
+            <div data-page='setting' class="navbar-inner cached">
+                <div class="left"><a href="#" class="back link"> <i class="icon icon-back"></i><span>zurück</span></a></div>
+                <div class="center sliding">Einstellungen</div>
+            </div>
+            <div data-page='positive' class="navbar-inner cached">
+                <div class="left"><a href="#" class="back link"> <i class="icon icon-back"></i><span>zurück</span></a></div>
+                <div class="center sliding">Positive Keywords</div>
+            </div>
+            <div data-page='negative' class="navbar-inner cached">
+                <div class="left"><a href="#" class="back link"> <i class="icon icon-back"></i><span>zurück</span></a></div>
+                <div class="center sliding">Negative Keywords</div>
+            </div>
         </div>
         <!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
         <div class="pages navbar-through toolbar-through">
           <!-- Page, data-page contains page name-->
           <div data-page="index" class="page">
-              <div class="page-content">
-                  <div data-pagination=".swiper-pagination .hidden" data-pagination-hide="true" class="swiper-container swiper-init ks-demo-slider">
+              <div class="page-content" data-ptr-distance="55">
+                  <div id="swiperContent">
+                  <div data-pagination=".swiper-pagination .hidden" data-pagination-hide="true" class="swiper-container">
                       <div class="swiper-pagination"></div>
                       <div class="swiper-wrapper">
-                          <div class="swiper-slide">Slide 1</div>
-                          <div class="swiper-slide">Slide 2</div>
-                          <div class="swiper-slide">Slide 3</div>
-                          <div class="swiper-slide">Slide 4</div>
-                          <div class="swiper-slide">Slide 5</div>
-                          <div class="swiper-slide">Slide 6</div>
-                          <div class="swiper-slide">Slide 7</div>
-                          <div class="swiper-slide">Slide 8</div>
-                          <div class="swiper-slide">Slide 9</div>
-                          <div class="swiper-slide">Slide 10</div>
                       </div>
+
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <div data-page="setting" class="page cached">
+              <!-- Scrollable page content-->
+              <div class="page-content">
+                  <form id="settings-form" action="" method="GET" class="list-block store-data ajax-submit-onchange ajax-submit">
+                      <ul>
+                          <li class="accordion-item"><a href="#" class="item-content item-link">
+                              <div class="item-inner">
+                                  <div class="item-title">Suchfilter</div>
+                              </div></a>
+                              <div class="accordion-item-content">
+
+                                  <div class="content-block">
+                                      <ul>
+                                          <li>
+                                              <a href="#positive" class="item-link item-content">
+                                                  <div class="item-inner">
+                                                      <div class="item-title">Positive Keywords</div>
+                                                  </div>
+                                              </a>
+                                          </li>
+                                          <li>
+                                              <a href="#negative" class="item-link item-content">
+                                                  <div class="item-inner">
+                                                      <div class="item-title">Negative keywords</div>
+                                                  </div>
+                                              </a>
+                                          </li>
+                                      </ul>
+                                  </div>
+                              </div>
+                          </li>
+
+                          <li class="accordion-item"><a href="#" class="item-content item-link">
+                              <div class="item-inner">
+                                  <div class="item-title">Kategorien</div>
+                              </div></a>
+                              <div class="accordion-item-content">
+                                  <div class="content-block">
+                                      <ul>
+                                          <li>
+                                              <label class="label-checkbox item-content">
+                                                  <input type="checkbox" name="category" value="1" checked="checked"/>
+                                                  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                                  <div class="item-inner">
+                                                      <div class="item-title">Entwicklung</div>
+                                                  </div>
+                                              </label>
+                                          </li>
+                                          <li>
+                                              <label class="label-checkbox item-content">
+                                                  <input type="checkbox" name="category" value="2"/>
+                                                  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                                  <div class="item-inner">
+                                                      <div class="item-title"> Grafik, Content, Medien</div>
+                                                  </div>
+                                              </label>
+                                          </li>
+                                          <li>
+                                              <label class="label-checkbox item-content">
+                                                  <input type="checkbox" name="category" value="3"/>
+                                                  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                                  <div class="item-inner">
+                                                      <div class="item-title"> IT-Infrastruktur</div>
+                                                  </div>
+                                              </label>
+                                          </li>
+                                          <li>
+                                              <label class="label-checkbox item-content">
+                                                  <input type="checkbox" name="category" value="4"/>
+                                                  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                                  <div class="item-inner">
+                                                      <div class="item-title">Beratung & Management</div>
+                                                  </div>
+                                              </label>
+                                          </li>
+                                          <li>
+                                              <label class="label-checkbox item-content">
+                                                  <input type="checkbox" name="category" value="5" />
+                                                  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                                  <div class="item-inner">
+                                                      <div class="item-title">SAP</div>
+                                                  </div>
+                                              </label>
+                                          </li>
+                                          <li>
+                                              <label class="label-checkbox item-content">
+                                                  <input type="checkbox" name="category" value="6"/>
+                                                  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                                  <div class="item-inner">
+                                                      <div class="item-title">Ingenieurwesen</div>
+                                                  </div>
+                                              </label>
+                                          </li>
+                                      </ul>
+                                  </div>
+                              </div>
+                          </li>
+
+                          <li class="accordion-item"><a href="#" class="item-content item-link">
+                              <div class="item-inner">
+                                  <div class="item-title">Ortsfilter</div>
+                              </div></a>
+                              <div class="accordion-item-content">
+                                  <div class="content-block">
+                                      <div class="label">Bundesland:</div>
+                                      <ul>
+                                          <li>
+                                              <label class="label-checkbox item-content">
+                                                  <input type="checkbox" name="place" value="108"/>
+                                                  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                                  <div class="item-inner">
+                                                      <div class="item-title">Brandenburg</div>
+                                                  </div>
+                                              </label>
+                                          </li>
+                                          <li>
+                                              <label class="label-checkbox item-content">
+                                                  <input type="checkbox" name="place" value="109"/>
+                                                  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                                  <div class="item-inner">
+                                                      <div class="item-title"> Berlin </div>
+                                                  </div>
+                                              </label>
+                                          </li>
+                                          <li>
+                                              <label class="label-checkbox item-content">
+                                                  <input type="checkbox" name="place" value="110"/>
+                                                  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                                  <div class="item-inner">
+                                                      <div class="item-title">Baden-Württemberg</div>
+                                                  </div>
+                                              </label>
+                                          </li>
+                                          <li>
+                                              <label class="label-checkbox item-content">
+                                                  <input type="checkbox" name="place" value="111" />
+                                                  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                                  <div class="item-inner">
+                                                      <div class="item-title">Bayern</div>
+                                                  </div>
+                                              </label>
+                                          </li>
+                                          <li>
+                                              <label class="label-checkbox item-content">
+                                                  <input type="checkbox" name="place" value="112"/>
+                                                  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                                  <div class="item-inner">
+                                                      <div class="item-title">Bremen</div>
+                                                  </div>
+                                              </label>
+                                          </li>
+                                          <li>
+                                              <label class="label-checkbox item-content">
+                                                  <input type="checkbox" name="place" value="113"/>
+                                                  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                                  <div class="item-inner">
+                                                      <div class="item-title">Hessen</div>
+                                                  </div>
+                                              </label>
+                                          </li>
+                                          <li>
+                                              <label class="label-checkbox item-content">
+                                                  <input type="checkbox" name="place" value="114"/>
+                                                  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                                  <div class="item-inner">
+                                                      <div class="item-title">Hamburg</div>
+                                                  </div>
+                                              </label>
+                                          </li>
+                                      </ul>
+                                  </div>
+                              </div>
+                          </li>
+
+                          <li class="accordion-item"><a href="#" class="item-content item-link">
+                              <div class="item-inner">
+                                  <div class="item-title">Bewerbungsvorlage</div>
+                              </div></a>
+                              <div class="accordion-item-content">
+                                  <div class="content-block">
+                                      <div class="item-input">
+                                          <textarea name="template">
+                                              [Anrede],
+                                              ich interessiere mich für die ausgeschriebene Position. Bitte
+                                              nehmen Sie zu mir Kontakt auf um alles weitere zu besprechen.
+                                              Mit freundlichen Grüßen
+                                              {NAME DES USERS} (ersetzen wir)
+                                          </textarea>
+                                          <label class="label-checkbox item-content">
+                                              <input type="checkbox" name="attachment" value="1"/>
+                                              <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                              <div class="item-inner">
+                                                  <div class="item-title">Anhänge versenden</div>
+                                              </div>
+                                          </label>
+                                      </div>
+                                  </div>
+                          </li>
+                      </ul>
+                  </form>
+              </div>
+          </div>
+          <div data-page="positive" class="page cached">
+              <!-- Scrollable page content-->
+              <div class="page-content">
+                  <div class="list-block ">
+                      <form id="positiveKeywords" class="store-data" >
+                      <ul id="positiveList">
+                          <li class="item-divider">Positive Keywords</li>
+                      </ul>
+                      </form>
+                      <ul>
+                          <li>
+                              <div class="item-content">
+                                  <div class="item-media"><i class="fa fa-plus"></i></div>
+                                  <div class="item-inner">
+                                      <div class="item-input">
+                                          <input type="text" name="addKeyword" data-target="positive">
+                                      </div>
+                                  </div>
+                              </div>
+                          </li>
+                      </ul>
+
+                  </div>
+              </div>
+           </div>
+          <div data-page="negative" class="page cached">
+              <!-- Scrollable page content-->
+              <div class="page-content">
+                  <div class="list-block ">
+                      <form id="negativeKeywords" class="store-data" >
+                          <ul id="negativeList">
+                              <li class="item-divider">Negative Keywords</li>
+                          </ul>
+                      </form>
+                      <ul>
+                          <li>
+                              <div class="item-content">
+                                  <div class="item-media"><i class="fa fa-plus"></i></div>
+                                  <div class="item-inner">
+                                      <div class="item-input">
+                                          <input type="text" name="addKeyword" data-target="negative">
+                                      </div>
+                                  </div>
+                              </div>
+                          </li>
+                      </ul>
+
                   </div>
               </div>
           </div>
         </div>
       </div>
     </div>
+    <div class="popup popup-forget-password">
+        <div class="content-block">
+
+        </div>
+    </div>
+    <div class="login-screen">
+        <!-- Default view-page layout -->
+        <div class="view">
+            <div class="page">
+                <!-- page-content has additional login-screen content -->
+                <div class="page-content login-screen-content">
+                    <div class="login-screen-title">Freelancermap Login</div>
+                    <!-- Login form -->
+                    <form>
+                        <div class="list-block">
+                            <ul>
+                                <li class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label">Username</div>
+                                        <div class="item-input">
+                                            <input type="text" name="username" placeholder="Username">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label">Password</div>
+                                        <div class="item-input">
+                                            <input type="password" name="password" placeholder="Password">
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="list-block">
+                            <ul>
+                                <li>
+                                    <a href="#" class="item-link list-button" id="login">Sign In</a>
+                                    <a href="#" class="close-login-screen" id="login-close"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/template7" id="projects">
+                {{#each projects}}
+                <div class="swiper-slide">
+                    <div class="card">
+                        <div class="card-header">{{title}}</div>
+                        <div class="card-content">
+                            <div class="card-content-inner">
+                                <p class="color-gray">Eingestellt:
+                                    {{created.date}}
+                                </p>
+                                <p class="color-gray">Vertragsart:
+                                    {{contract}}
+                                </p>
+                                <p class="color-gray">Start:
+                                    {{start}}
+                                </p>
+                                <p class="color-gray">Dauer:
+                                    {{last}}
+                                </p>
+                                <p class="color-gray">Von:
+                                    {{company}}
+                                </p>
+                                <p class="color-gray">Ort:
+                                    {{city}}
+                                </p>
+                                <p class="color-gray">Land:
+                                    {{country}}
+                                </p>
+
+                                <div class="list-block accordion-list">
+                                    <ul>
+                                        <li class="accordion-item">
+                                            <a href="" class="item-link item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title">Projektbeschreibung</div>
+                                                </div>
+                                            </a>
+                                            <div class="accordion-item-content">
+                                                <div style="padding:0 15px">
+                                                    {{description}}
+                                                </div>
+
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div>
+
+                        </div>
+
+                    </div>
+                    <div style="margin:10px">
+                        <p>
+                            <a href="#" class="button button-round active apply" onclick="apply({{id}})"><i class="fa fa-envelope-o"></i>&nbsp;Bewerbung</a>
+                        </p>
+                        <p>
+                            <a href="#" class="button button-round active wishlist" onclick="addWishlist({{id}})"><i class="fa fa-thumb-tack"></i>&nbsp;Merken</a>
+                        </p>
+                    </div>
+                </div>
+                {{/each}}
+    </script>
     <!-- Path to Framework7 Library JS-->
     <script type="text/javascript" src="js/framework7.min.js"></script>
     <!-- Path to your app js-->
     <script type="text/javascript" src="js/my-app.js"></script>
+
   </body>
 </html>
