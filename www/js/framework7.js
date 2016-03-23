@@ -5408,6 +5408,7 @@
             }
             else {
                 // Navbar HTML
+
                 if (!app._compiledTemplates.smartSelectNavbar) {
                     app._compiledTemplates.smartSelectNavbar = t7.compile(app.params.smartSelectNavbarTemplate || 
                         '<div class="navbar {{#if navbarTheme}}theme-{{navbarTheme}}{{/if}}">' +
@@ -5417,6 +5418,7 @@
                             '</div>' +
                         '</div>'
                     );
+
                 }
                 navbarHTML = app._compiledTemplates.smartSelectNavbar({
                     pageTitle: pageTitle,
@@ -5430,6 +5432,7 @@
                         (app.params.smartSelectPopupCloseTemplate || (material ? '<div class="left"><a href="#" class="link close-popup icon-only"><i class="icon icon-back"></i></a></div>' : '<div class="left"><a href="#" class="link close-popup"><i class="icon icon-back"></i><span>{{closeText}}</span></a></div>')).replace(/{{closeText}}/g, closeText) :
                         (app.params.smartSelectBackTemplate || (material ? '<div class="left"><a href="#" class="back link icon-only"><i class="icon icon-back"></i></a></div>' : '<div class="left sliding"><a href="#" class="back link"><i class="icon icon-back"></i><span>{{backText}}</span></a></div>')).replace(/{{backText}}/g, backText)
                 });
+                console.log(smartSelectData.navbarTheme);
                 // Determine navbar layout type - static/fixed/through
                 if (openIn === 'page') {
                     navbarLayout = 'static';
