@@ -332,13 +332,17 @@ div.ks-demo-lazy {
 }
 
 .list-block textarea{
-    padding: 15px;
     font-size: 12px;
+    line-height:1.2
 }
 
 
 .list-block .list-block{
     font-size: 14px;
+}
+
+#logo{
+    margin-top:14px
 }
 
 .welcomescreen-container {
@@ -427,4 +431,8 @@ html.with-statusbar-overlay .welcomescreen-container{
     border-radius: 10px;
     color: #0da6ec !important;
     text-decoration: none !important;
+}
+
+.clear{
+    clear: both;
 }

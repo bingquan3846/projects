@@ -1,6 +1,12 @@
 // Initialize your app
 var myApp = new Framework7({
-    material: true
+    material: true,
+    preroute : function(view, options){
+        if (!Template7.global.login) {
+            myApp.alert(' Über die Einstellungen können Sie Filter für Ihre Wunschprojekte setzen und einen individuellen Bewerbungstext definieren. Bitte loggen Sie sich ein um dieses Feature zu nutzen.', 'Freelancermap');
+            return false; //required to prevent default router action
+        }
+    }
 });
 
 // Export selectors engine
@@ -18,7 +24,7 @@ var mainView = myApp.addView('.view-main', {
 
 // ajax request url
 var domain = "http://dev.freelancermap.de";
-var loginUrl = domain + "/index.php?module=api&func=login";
+var loginUrl = domain + "/inderovrx.php?module=api&func=login";
 var projectsUrl = domain + "/index.php?module=api&func=projects&local=0";
 var applyUrl = domain + "/index.php?module=api&func=apply";
 var wishListUrl = domain + "/index.php?module=api&func=wishList";
@@ -26,7 +32,14 @@ var projectContentUrl = domain + "/index.php?module=api&func=showContent";
 var pageNum = 1;
 var projectsTemplate = $$('script#projects').html();
 var compiledProjectsTemplate = Template7.compile(projectsTemplate);
+Template7.global = {
+    login: false
+};
 
+$$('#notLogin').on('click', function(){
+    $$('#login-close').click();
+    refreshSlider();
+});
 
 $$('#login').on('click', function(){
     var username = $$("input[name='username']").val();
@@ -47,11 +60,19 @@ $$('#login').on('click', function(){
         data: { username: username, password: password },
         success: function(data){
             data = JSON.parse(data);
-            myApp.hideIndicator();
-            myApp.ls['uid'] = data.uid;
-            myApp.ls['token'] = data.token;
-            welcomeScreen(myApp);
-            $$('#login-close').click();
+            if(data.error){
+                myApp.hideIndicator();
+                myApp.alert('Profil Fehler', 'Freelancermap login');
+            }else{
+                myApp.hideIndicator();
+                myApp.ls['uid'] = data.uid;
+                myApp.ls['token'] = data.token;
+                myApp.ls['firstname'] = data.firstName;
+                myApp.ls['lastname'] = data.lastName;
+                Template7.global.login = true;
+                welcomeScreen(myApp);
+                $$('#login-close').click();
+            }
         },
         error: function(data){
             myApp.hideIndicator();
@@ -67,10 +88,11 @@ $$('#logo').on("click",function(){
 
 var slider = new Swiper('.swiper-container', {
     loop: false,
-    onSlideNextEnd: function(slider, event){
+    onTouchEnd : function(slider,event){
         if(slider.swipeDirection == 'next' && slider.isEnd){
             getProjects(pageNum,true);
         }
+
     }
 });
 
@@ -79,6 +101,7 @@ if(typeof myApp.ls['token'] ==  'undefined'){
     myApp.loginScreen();
 }else{
     refreshSlider();
+    Template7.global.login = true;
 }
 
 // functions
@@ -95,19 +118,18 @@ myApp.onPageInit('positive', function (page) {
 
         if($$(this).val().trim() != ''){
             var target = $$(this).data('target');
-            var liHtml = '<li class="swipeout"> <label class="label-checkbox item-content swipeout-content"><input type="checkbox" name="' + target + '" value="'+ $$(this).val() + '" checked="true"><div class="item-inner"><div class="item-title"> ' + $$(this).val() + ' </div></div></label>       <div class="swipeout-actions-right"> <a href="#" class="swipeout-delete">löschen</a></div></li>'
+            var keywordsNum = $$('#' + target + 'List').find('.swipeout').length;
+            var liHtml = '<li class="swipeout" id="new' + target +(keywordsNum + 1) +'"> <label class="label-checkbox item-content swipeout-content"><input type="checkbox" name="' + target + '" value="'+ $$(this).val() + '" checked="true"><div class="item-inner"><div class="item-title"> ' + $$(this).val() + ' </div></div></label><div class="swipeout-actions-right"> <a href="#" class="swipeout-delete">löschen</a></div></li>'
+
             $$('#' + target + 'List').append(liHtml);
             $$(this).val('');
             myApp.formStoreData(target+'Keywords', myApp.formToJSON ('#'+target+'Keywords'));
             refreshSlider();
+            addClickEventToDeleteKeywords('#new' + target +(keywordsNum + 1) );
         }
     });
 
     initPositiveKeywordsForm();
-
-    $$('.swipeout').on('delete', function () {
-        refreshSlider();
-    });
 
 });
 
@@ -117,20 +139,30 @@ myApp.onPageInit('negative', function (page) {
 
         if($$(this).val().trim() != ''){
             var target = $$(this).data('target');
-            var liHtml = '<li class="swipeout"> <label class="label-checkbox item-content swipeout-content"><input type="checkbox" name="' + target + '" value="'+ $$(this).val() + '" checked="true"><div class="item-inner"><div class="item-title"> ' + $$(this).val() + ' </div></div></label>       <div class="swipeout-actions-right"> <a href="#" class="swipeout-delete">löschen</a></div></li>'
+            var keywordsNum = $$('#' + target + 'List').find('.swipeout').length;
+            var liHtml = '<li class="swipeout" id="new' + target + (keywordsNum + 1) +'"> <label class="label-checkbox item-content swipeout-content"><input type="checkbox" name="' + target + '" value="'+ $$(this).val() + '" checked="true"><div class="item-inner"><div class="item-title"> ' + $$(this).val() + ' </div></div></label><div class="swipeout-actions-right"> <a href="#" class="swipeout-delete">löschen</a></div></li>'
             $$('#' + target + 'List').append(liHtml);
             $$(this).val('');
             myApp.formStoreData(target+'Keywords', myApp.formToJSON ('#'+target+'Keywords'));
             refreshSlider();
+            addClickEventToDeleteKeywords('#new' + target +(keywordsNum + 1), target );
         }
 
     });
 
     initNegativeKeywordsForm();
+});
 
-    $$('.swipeout').on('delete', function () {
-        refreshSlider();
-    });
+
+myApp.onPageInit('settings', function(page){
+    // replace template with firstname and lastname
+    if(myApp.ls['uid']){
+        var template = $$('#settings-form textarea[name="template"]').val();
+        var newTemplate = template.replace('{NAME DES USERS}', myApp.ls['firstname'] + ' ' +  myApp.ls['lastname']);
+        $$('#settings-form textarea[name="template"]').val(newTemplate);
+        myApp.formStoreData('settings-form', myApp.formToJSON ('#settings-form'));
+    }
+
 });
 
 
@@ -142,7 +174,7 @@ function getProjects(page, next){
     $$.ajax({
         url: projectsUrl + '&uid=' + myApp.ls['uid'] + '&page=' + page + '&token=' + myApp.ls['token'],
         type: "GET",
-        data: {categoryPlace: JSON.parse(formData), keywords: [JSON.parse(positiveKeywords) , JSON.parse(negativeKeywords)] },
+        data: {params: JSON.parse(formData), keywords: [JSON.parse(positiveKeywords) , JSON.parse(negativeKeywords)] },
         success: function(data, textStatus ){
             if(data != ''){
                 data = JSON.parse(data);
@@ -161,13 +193,22 @@ function getProjects(page, next){
                         getProjects(pageNum);
                     }
                     pageNum++;
+                    if( next ){
+                        slider.slideTo(previousSize);
+                    }
 
                 }else{
                     if(!next){
-                        myApp.alert('Nichts','Freelancermap');
+                        myApp.alert('Zu Ihren Suchparametern konnten wir leider keine Projekte finden','Freelancermap');
+                    }else{
+                        refreshSlider();
                     }
                 }
             }
+        },
+        error: function(){
+            myApp.hideIndicator();
+            myApp.loginScreen();
         }
     });
 }
@@ -177,7 +218,7 @@ function apply(projectId, poster, obj){
         var template = JSON.parse(myApp.ls['f7form-settings-form']).template;
         var attachment = JSON.parse(myApp.ls['f7form-settings-form']).attachment[0];
     }else{
-        var template = "[Anrede],\nich interessiere mich für die ausgeschriebene Position. Bitte\nnehmen Sie zu mir Kontakt auf um alles weitre zu besprechen.\nMit freundlichen Grüßen\n{NAME DES USERS}";
+        var template = "[Anrede],\nich interessiere mich für die ausgeschriebene Position. Bitte\nnehmen Sie zu mir Kontakt auf um alles weitre zu besprechen.\nMit freundlichen Grüßen\n" + myApp.ls['firstname'] + ' ' +  myApp.ls['lastname'];
         var attachment = 0;
     }
     $$.ajax({
@@ -186,10 +227,11 @@ function apply(projectId, poster, obj){
         data: {projectId: projectId, uid: myApp.ls['uid'], token: myApp.ls['token'], poster : poster, template: template, attachment: attachment},
         success: function(data){
             data = JSON.parse(data);
-            console.log(data);
             if( data.error == 0){
-                myApp.alert("beworben", "Freelancermap");
-                $$(obj).parent().html('<i class="fa fa-envelope-o"></i>beworben');
+                myApp.alert("Sie haben sich erfolgreich auf die Stelle beworben.", "Freelancermap");
+                $$(obj).parent().html('<i class="fa fa-envelope-o"></i>&nbsp;beworben');
+            }else if(data.error == -1){
+                myApp.alert("Bitte legen Sie online ein Profil an um sich auf dieses Projekt zu bewerben.", "Freelancermap");
             }else{
                 myApp.alert("blocked oder Fehler", "Freelancermap");
             }
@@ -205,8 +247,7 @@ function addWishlist(projectId, obj){
         success: function(data){
             data = JSON.parse(data);
             if( !data.error ){
-                myApp.alert("Gemerkt", "Freelancermap");
-                $$(obj).parent().html('<i class="fa fa-star"></i>gemerkt');
+                $$(obj).parent().html('<i class="fa fa-star"></i>&nbsp;gemerkt');
             }
         }
     });
@@ -239,8 +280,10 @@ function initPositiveKeywordsForm(){
                 var liHtml = '<li class="swipeout"> <label class="label-checkbox item-content swipeout-content"><input type="checkbox" name="' + target + '" value="'+ pKeywords.positive[i] + '" checked="true"><div class="item-inner"><div class="item-title"> ' + pKeywords.positive[i] + ' </div></div></label>       <div class="swipeout-actions-right"> <a href="#" class="swipeout-delete">löschen</a></div></li>'
                 $$('#' + target + 'List').append(liHtml);
             }
+            addClickEventToDeleteKeywords('#' + target + 'List', target);
         }
     }
+
 }
 
 function initNegativeKeywordsForm(){
@@ -252,9 +295,21 @@ function initNegativeKeywordsForm(){
                 var liHtml = '<li class="swipeout"> <label class="label-checkbox item-content swipeout-content"><input type="checkbox" name="' + target + '" value="'+ nKeywords.negative[i] + '" checked="true"><div class="item-inner"><div class="item-title"> ' + nKeywords.negative[i] + ' </div></div></label>       <div class="swipeout-actions-right"> <a href="#" class="swipeout-delete">löschen</a></div></li>'
                 $$('#' + target + 'List').append(liHtml);
             }
+            addClickEventToDeleteKeywords('#' + target + 'List', target);
         }
+
     }
 
+}
+
+function addClickEventToDeleteKeywords(obj, target){
+    $$(obj).find(".swipeout-delete").each(function(){
+        $$(this).once('click', function (e) {
+            myApp.formStoreData(target + 'Keywords', myApp.formToJSON ('#' + target + 'Keywords'));
+            $$('.swipeout').removeAttr('id');
+            refreshSlider();
+        });
+    });
 }
 
 function welcomeScreen(myapp){

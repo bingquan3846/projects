@@ -19,80 +19,79 @@
 <div class="statusbar-overlay"></div>
 <div class="panel-overlay"></div>
 <div class="views">
-<div class="view view-main">
-<div class="pages navbar-fixed">
-<div data-page="index" class="page">
-<div class="navbar theme-white">
-    <div class="navbar-inner">
-        <div class="center sliding"><img src="img/freelancermap_logo.svg" width="128" id="logo"/> </div>
-        <div class="right">
-            <!-- Right link contains only icon - additional "icon-only" class-->
-            <a href="settings.html" class="item-link">
-                <div class="item-content">
-                    <div class="item-media"><i class="fa fa-cog"></i></div>
+    <div class="view view-main">
+        <div class="pages navbar-fixed">
+            <div data-page="index" class="page">
+                <div class="navbar theme-white">
+                    <div class="navbar-inner">
+                        <div class="center sliding"><img src="img/freelancermap_logo.svg" width="128" id="logo"/> </div>
+                        <div class="right">
+                            <!-- Right link contains only icon - additional "icon-only" class-->
+                            <a href="settings.html" class="item-link">
+                                <div class="item-content">
+                                    <div class="item-media"><i class="fa fa-cog"></i></div>
+                                </div>
+                            </a>&nbsp;
+                        </div>
+                    </div>
                 </div>
-            </a>&nbsp;
+                <div class="page-content">
+                    <div id="swiperContent">
+                        <div data-pagination=".swiper-pagination .hidden" data-pagination-hide="true" class="swiper-container">
+                            <div class="swiper-pagination"></div>
+                                <div class="swiper-wrapper">
+
+                                </div>
+                         </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
-    </div>
-</div>
-<div class="page-content">
-<div id="swiperContent">
-<div data-pagination=".swiper-pagination .hidden" data-pagination-hide="true" class="swiper-container">
-<div class="swiper-pagination"></div>
-<div class="swiper-wrapper">
-
-</div>
-</div>
-</div>
-</div>
-
-</div>
-</div>
-</div>
-</div>
-
+     </div>
+ </div>
 <div class="login-screen">
     <!-- Default view-page layout -->
     <div class="view">
         <div class="page">
             <!-- page-content has additional login-screen content -->
-            <div class="page-content login-screen-content">
+            <div class="page-content">
                 <div class="login-screen-title">Freelancermap Login</div>
                 <!-- Login form -->
                 <form>
-                    <div class="list-block">
+                    <div class="list-block inset">
                         <ul>
                             <li class="item-content">
                                 <div class="item-inner">
-                                    <div class="item-title label">E-Mail</div>
                                     <div class="item-input">
-                                        <input type="text" name="username" placeholder="Username" value="bao@freelancermap.de">
+                                        <input type="text" name="username" placeholder="Benutzername oder E-Mail" value="">
                                     </div>
                                 </div>
                             </li>
                             <li class="item-content">
                                 <div class="item-inner">
-                                    <div class="item-title label">Password</div>
                                     <div class="item-input">
-                                        <input type="password" name="password" placeholder="Password" value="test">
+                                        <input type="password" name="password" placeholder="Passwort" value="">
                                     </div>
                                 </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="list-block">
-                        <ul>
-                            <li>
-                                <a href="#" class="item-link  button" id="login">Sign In</a>
-                                <a href="#" class="close-login-screen" id="login-close"></a>
                             </li>
                         </ul>
                     </div>
                     <div class="content-block">
+
+                        <a href="#" class=" pull-left button " id="notLogin">Gastzugang ohne Login</a>
+                        <a href="#" class="active pull-right button " id="login">Sign In</a>
+
+                        <a href="#" class="close-login-screen" id="login-close"></a>
+
+                    </div>
+                    <div class="content-block clear">
                         <p>
+                            <br/>
                             Bitte beachten Sie, dass diese App eine sinnvolle Ergänzung zu dem Onlineangebot auf unserem Portal ist. Für die bestmögliche Nutzung benötigen Sie einen kostenlosen Account auf der Plattform freelancermap und ein ausgefülltes Profil.
                         </p>
                     </div>
+
                 </form>
             </div>
         </div>
@@ -151,18 +150,24 @@
 
         </div>
         <div style="margin:10px">
+            {{#if @global.login}}
             <p>
                 {{#js_compare "this.data.show == 1"}}
-                <a href="#" class="button button-round active apply" onclick="apply({{data.id}}, {{data.poster}}, this)"><i class="fa fa-envelope-o"></i>&nbsp;Bewerbung</a>
+                <span class="button button-round active apply" onclick="apply({{data.id}}, {{data.poster}}, this)"><i class="fa fa-envelope-o"></i>&nbsp;Bewerbung</span>
                 {{/js_compare}}
             </p>
             <p>
                 {{#if data.status}}
                 <i class="fa fa-star"></i>{{data.status}}
                 {{else}}
-                <a href="#" class="button button-round active wishlist" onclick="addWishlist({{data.id}}, this)"><i class="fa fa-thumb-tack"></i>&nbsp;Merken</a>
+                <span class="button button-round active wishlist" onclick="addWishlist({{data.id}}, this)"><i class="fa fa-thumb-tack"></i>&nbsp;Merken</span>
                 {{/if}}
             </p>
+
+            {{else}}
+            <a href="#" class="item-link" onclick="myApp.loginScreen()"><i class="fa fa-sign-in" aria-hidden="true"></i>&nbsp;Loggen Sie sich ein um sich auf dieses Projekt zu
+                bewerben</a>
+            {{/if}}
 
         </div>
     </div>
