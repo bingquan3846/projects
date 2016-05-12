@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>Freelancermap</title>
+    <!-- Path to Framework7 Library CSS-->
+    <link rel="stylesheet" href="css/framework7.ios.min.css">
+    <link rel="stylesheet" href="css/framework7.ios.colors.min.css">
+    <!-- Path to your custom app styles-->
+    <link rel="stylesheet" href="css/my-app.css">
+    <link href="css/font-awesome.css" rel="stylesheet">
+  </head>
+  <body>
+    <!-- Status bar overlay for fullscreen mode-->
+    <div class="statusbar-overlay"></div>
+    <!-- Panels overlay-->
+    <div class="panel-overlay"></div>
+    <!-- Left panel with reveal effect-->
+    <div class="panel panel-left panel-reveal">
+      <div class="content-block">
+        <p>Left panel content goes here</p>
+      </div>
+    </div>
+    <!-- Right panel with cover effect-->
+    <div class="panel panel-right panel-cover">
+      <div class="content-block">
+        <p>Right panel content goes here</p>
+      </div>
+    </div>
+    <!-- Views-->
+    <div class="views ">
+      <!-- Your main view, should have "view-main" class-->
+      <div class="view view-main">
+        <!-- Top Navbar-->
+        <div class="navbar theme-white ">
+          <div data-page='index' class="navbar-inner">
+            <!-- We have home navbar without left link-->
+            <div class="center sliding"><img src="img/freelancermap_logo.svg" width="128" id="logo"/> </div>
+            <div class="right">
+              <a href="#index" onclick="showMerkliste()" id="merklistButton"><i class="fa fa-thumb-tack"></i></a><a href="#setting" class="item-link"> <i class="fa fa-cog"></i></a>
+            </div>
+          </div>
+            <div data-page='setting' class="navbar-inner cached">
+                <div class="left"><a href="#" class="back link" onclick="refreshSlider()"> <i class="icon icon-back"></i><span>zurück</span></a></div>
+                <div class="center sliding"><img src="img/freelancermap_logo.svg" width="128"/> </div>
+            </div>
+            <div data-page='positive' class="navbar-inner cached">
+                <div class="left"><a href="#" class="back link"> <i class="icon icon-back"></i><span>zurück</span></a></div>
+                <div class="center sliding"><img src="img/freelancermap_logo.svg" width="128"/> </div>
+            </div>
+            <div data-page='negative' class="navbar-inner cached">
+                <div class="left"><a href="#" class="back link"> <i class="icon icon-back"></i><span>zurück</span></a></div>
+                <div class="center sliding"><img src="img/freelancermap_logo.svg" width="128"/> </div>
+            </div>
+            <div data-page='merkliste' class="navbar-inner cached">
+                <div class="left"><a href="#" class="back link"> <i class="icon icon-back"></i><span>zurück</span></a></div>
+                <div class="center sliding"><img src="img/freelancermap_logo.svg" width="128"/> </div>
+            </div>
+        </div>
+        <!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
+        <div class="pages navbar-through toolbar-through">
+          <!-- Page, data-page contains page name-->
+          <div data-page="index" class="page">
+              <div class="page-content" data-ptr-distance="55">
+                  <div id="swiperContent">
+                  <div data-pagination=".swiper-pagination .hidden" data-pagination-hide="true" class="swiper-container">
+                      <div class="swiper-pagination"></div>
+                      <div class="swiper-wrapper">
+
+                      </div>
+                      </div>
+                  </div>
+                  <div id="merkliste" class="list-block" style="display: none">
+                  </div>
+              </div>
+          </div>
+
+          <div data-page="setting" class="page cached">
+              <!-- Scrollable page content-->
+              <div class="page-content">
+                  <div class="content-block-title">Einstellungen</div>
+                  <form id="settings-form" action="" method="GET" class="store-data ">
+                      <div class="list-block accordion-list">
+                            <ul>
+                          <li class="accordion-item"><a href="#" class="item-content item-link">
+                              <div class="item-inner">
+                                  <div class="item-title">Suchfilter</div>
+
+                              </div></a>
+                              <div class="accordion-item-content">
+                                  <div class="content-block">
+                                      <ul>
+                                          <li>
+                                              <a href="#positive" class="item-link item-content">
+                                                  <div class="item-inner">
+                                                      <div class="item-title">Positive Keywords</div>
+                                                  </div>
+                                              </a>
+                                          </li>
+                                          <li>
+                                              <a href="#negative" class="item-link item-content">
+                                                  <div class="item-inner">
+                                                      <div class="item-title">Negative keywords</div>
+                                                  </div>
+                                              </a>
+                                          </li>
+                                      </ul>
+                                  </div>
+                              </div>
+                          </li>
+                          <li class="accordion-item"><a href="#" class="item-content item-link">
+                              <div class="item-inner">
+                                  <div class="item-title">Kategorien</div>
+                              </div></a>
+                              <div class="accordion-item-content">
+                                  <div class="content-block">
+                                      <ul>
+                                          <li>
+                                              <label class="label-checkbox item-content">
+                                                  <input type="checkbox" name="category" value="1" checked="checked"/>
+                                                  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                                  <div class="item-inner">
+                                                      <div class="item-title">Entwicklung</div>
+                                                  </div>
+                                              </label>
+                                          </li>
+                                          <li>
+                                              <label class="label-checkbox item-content">
+                                                  <input type="checkbox" name="category" value="2" checked="checked"/>
+                                                  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                                  <div class="item-inner">
+                                                      <div class="item-title"> Grafik, Content, Medien</div>
+                                                  </div>
+                                              </label>
+                                          </li>
+                                          <li>
+                                              <label class="label-checkbox item-content">
+                                                  <input type="checkbox" name="category" value="3" checked="checked"/>
+                                                  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                                  <div class="item-inner">
+                                                      <div class="item-title"> IT-Infrastruktur</div>
+                                                  </div>
+                                              </label>
+                                          </li>
+                                          <li>
+                                              <label class="label-checkbox item-content">
+                                                  <input type="checkbox" name="category" value="4" checked="checked"/>
+                                                  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                                  <div class="item-inner">
+                                                      <div class="item-title">Beratung & Management</div>
+                                                  </div>
+                                              </label>
+                                          </li>
+                                          <li>
+                                              <label class="label-checkbox item-content">
+                                                  <input type="checkbox" name="category" value="5" checked="checked"/>
+                                                  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                                  <div class="item-inner">
+                                                      <div class="item-title">SAP</div>
+                                                  </div>
+                                              </label>
+                                          </li>
+                                          <li>
+                                              <label class="label-checkbox item-content">
+                                                  <input type="checkbox" name="category" value="6" checked="checked"/>
+                                                  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                                  <div class="item-inner">
+                                                      <div class="item-title">Ingenieurwesen</div>
+                                                  </div>
+                                              </label>
+                                          </li>
+                                      </ul>
+                                  </div>
+                              </div>
+                          </li>
+                          <li class="accordion-item"><a href="#" class="item-content item-link">
+                              <div class="item-inner">
+                                  <div class="item-title">Ortsfilter</div>
+                              </div></a>
+                              <div class="accordion-item-content">
+                                  <div class="content-block">
+                                      <ul>
+                                          <li><a href="#" class="item-link smart-select" data-back-text="zurück">
+                                              <!-- "multiple" attribute for multiple select-->
+                                              <select name="state" multiple>
+                                                  <!-- options grouped within "optgroup" tag-->
+                                                  <optgroup label="Bundesland">
+                                                      <option value="108" >Brandenburg</option>
+                                                      <option value="109" >Berlin</option>
+                                                      <option value="110" >Baden-Württemberg</option>
+                                                      <option value="111" >Bayern</option>
+                                                      <option value="112" >Bremen</option>
+                                                      <option value="113" >Hessen</option>
+                                                      <option value="114" >Hamburg</option>
+                                                      <option value="115" >Mecklenburg-Vorpommern</option>
+                                                      <option value="117" >Nordrhein-Westfalen</option>
+                                                      <option value="118" >Rheinland-Pfalz</option>
+                                                      <option value="119" >Schleswig-Holstein</option>
+                                                      <option value="120" >Saarland</option>
+                                                      <option value="121" >Sachsen</option>
+                                                      <option value="122" >Sachsen-Anhalt</option>
+                                                      <option value="123" >Thüringen</option>
+                                                  </optgroup>
+                                              </select>
+                                              <div class="item-content">
+                                                  <div class="item-inner">
+                                                      <div class="item-title">Bundesland</div>
+                                                  </div>
+                                              </div></a>
+                                          </li>
+                                          <li>
+                                              <a href="#" class="item-link smart-select" data-back-text="zurück">
+                                              <!-- "multiple" attribute for multiple select-->
+                                              <select name="country" multiple>
+                                                  <!-- options grouped within "optgroup" tag-->
+                                                  <optgroup label="Länder">
+                                                      <option value="1" selected> Deutschland</option>
+                                                      <option value="2" selected> Österreich</option>
+                                                      <option value="3" selected> Schweiz</option>
+                                                  </optgroup>
+                                              </select>
+                                              <div class="item-content">
+                                                  <div class="item-inner">
+                                                      <div class="item-title">Länder</div>
+                                                  </div>
+                                              </div></a>
+                                          </li>
+                                      </ul>
+                                  </div>
+                              </div>
+                          </li>
+                          <li class="accordion-item"><a href="#" class="item-content item-link">
+                              <div class="item-inner">
+                                  <div class="item-title">Vertragsart</div>
+                              </div></a>
+                              <div class="accordion-item-content">
+                                  <div class="content-block">
+                                      <ul>
+                                          <li>
+                                              <label class="label-checkbox item-content">
+                                                  <input type="checkbox" name="contractType" value="CONTRACT" checked="checked"/>
+                                                  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                                  <div class="item-inner">
+                                                      <div class="item-title">Vor Ort</div>
+                                                  </div>
+                                              </label>
+                                          </li>
+                                          <li>
+                                              <label class="label-checkbox item-content">
+                                                  <input type="checkbox" name="contractType" value="FESTANSTELLUNG" checked="checked"/>
+                                                  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                                  <div class="item-inner">
+                                                      <div class="item-title"> Festanstellung</div>
+                                                  </div>
+                                              </label>
+                                          </li>
+                                          <li>
+                                              <label class="label-checkbox item-content">
+                                                  <input type="checkbox" name="contractType" value="REMOTE" checked="checked"/>
+                                                  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                                  <div class="item-inner">
+                                                      <div class="item-title"> Remote</div>
+                                                  </div>
+                                              </label>
+                                          </li>
+                                      </ul>
+                                  </div>
+                              </div>
+                          </li>
+                          <li class="accordion-item"><a href="#" class="item-content item-link">
+                              <div class="item-inner">
+                                  <div class="item-title">Bewerbungsvorlage</div>
+                              </div></a>
+                              <div class="accordion-item-content">
+                                  <div class="content-block">
+                                      <div class="item-input">
+                                          <textarea name="template" >
+[Anrede],
+ich interessiere mich für die ausgeschriebene Position. Bitte
+nehmen Sie zu mir Kontakt auf um alles weitere zu besprechen.
+Mit freundlichen Grüßen
+{NAME DES USERS}</textarea>
+                                      </div>
+                                      <br/>
+                                      <div class="item-input">
+                                          <label class="label-checkbox item-content">
+                                              <input type="checkbox" name="attachment" value="1"/>
+                                              <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                              <div class="item-inner">
+                                                  <div class="item-title">Anhänge versenden</div>
+                                              </div>
+                                          </label>
+                                     </div>
+                                  </div>
+                                </div>
+                          </li>
+                      </ul>
+                      </div>
+                  </form>
+                  <p class="content-block"><a href="#" class="button button-small color-red button-fill" onclick="loginOut()">Abmelden</a></p>
+                  <div class="content-block">
+                      <strong>Impressum</strong>
+                      <p>freelancermap GmbH <br>
+                      Pretzfelder Straße 7-11<br>
+                      D-90425 Nürnberg<br>
+                      Deutschland</p>
+
+                      <p>
+                      Tel.: +49 - 1805 - 47 11 74 26 (14 Ct./Min. aus dem dt. Festnetz,<br>
+                      max. 42 Ct./Min. aus dem Mobilnetz)<br>
+                      Fax: +49 - 911 - 99 39 94 02</p>
+                      <p>
+                      E-Mail: office@freelancermap.de</p>
+
+                      <p>
+                      Vertretungsberechtigter Geschäftsführer: Michael Amtmann </p>
+                      <p>
+                      Amtsgericht: Nürnberg<br>
+                      Firmensitz: Nürnberg<br>
+                      HRB: 27944</p>
+
+                      USt.ID: DE260465872<br>
+                  </div>
+              </div>
+          </div>
+          <div data-page="positive" class="page cached">
+              <div class="page-content">
+                  <div class="content-block">Definieren Sie Suchbegriffe, die in Ihren
+                      gewünschten Projekten vorkommen müssen.
+                      Tipp: Sie können mit Wildcards (*) arbeiten</div>
+                  <div class="content-block-title">Positive Keywords</div>
+                  <div class="list-block ">
+                      <form id="positiveKeywords" class="store-data" >
+                      <ul id="positiveList">
+                      </ul>
+                      </form>
+                      <ul>
+                          <li>
+                              <div class="item-content">
+                                  <div class="item-media"><i class="fa fa-plus"></i></div>
+                                  <div class="item-inner">
+                                      <div class="item-input">
+                                          <input type="text" name="addKeyword" data-target="positive">
+                                      </div>
+                                  </div>
+                              </div>
+                          </li>
+                      </ul>
+                  </div>
+                  <div class="item-content">
+                      <div class="item-inner content-block">
+                          Tipp: Um Einträge zu löschen wischen Sie
+                          diese nach links
+                      </div>
+                  </div>
+              </div>
+
+           </div>
+          <div data-page="negative" class="page cached">
+              <div class="page-content">
+                  <div class="content-block">Definieren Sie Suchbegriffe, die in Ihren
+                      gewünschten Projekten vorkommen müssen.
+                      Tipp: Sie können mit Wildcards (*) arbeiten</div>
+                  <div class="content-block-title">Negative Keywords</div>
+                  <div class="list-block ">
+                      <form id="negativeKeywords" class="store-data" >
+                          <ul id="negativeList">
+                          </ul>
+                      </form>
+                      <ul>
+                          <li>
+                              <div class="item-content">
+                                  <div class="item-media"><i class="fa fa-plus"></i></div>
+                                  <div class="item-inner">
+                                      <div class="item-input">
+                                          <input type="text" name="addKeyword" data-target="negative">
+                                      </div>
+                                  </div>
+                              </div>
+                          </li>
+                      </ul>
+
+                  </div>
+                  <div class="item-content">
+                      <div class="item-inner content-block">
+                          Tipp: Um Einträge zu löschen wischen Sie
+                          diese nach links
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div data-page="merkliste" class="page cached">
+              <div class="page-content">
+                <div id="projectDetail">
+
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="popup popup-forget-password">
+        <div class="content-block">
+
+        </div>
+    </div>
+    <div class="login-screen">
+        <!-- Default view-page layout -->
+        <div class="view">
+            <div class="page">
+                <!-- page-content has additional login-screen content -->
+                <div class="page-content">
+                    <div class="login-screen-title">Freelancermap Login</div>
+                    <!-- Login form -->
+                    <form>
+                        <div class="list-block inset">
+                            <ul>
+                                <li class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-input">
+                                            <input type="text" name="username" placeholder="Benutzername oder E-Mail" value="">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-input">
+                                            <input type="password" name="password" placeholder="Passwort" value="">
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="content-block">
+
+                                <a href="#" class=" pull-left button " id="notLogin">Gastzugang ohne Login</a>
+                                <a href="#" class="active pull-right button " id="login">Sign In</a>
+
+                                <a href="#" class="close-login-screen" id="login-close"></a>
+
+                        </div>
+                        <div class="content-block clear">
+                        <p>
+                            <br/>
+                            Bitte beachten Sie, dass diese App eine sinnvolle Ergänzung zu dem Onlineangebot auf unserem Portal ist. Für die bestmögliche Nutzung benötigen Sie einen kostenlosen Account auf der Plattform freelancermap und ein ausgefülltes Profil.
+                        </p>
+                        </div>
+                        <div class="content-block">
+                            <a href="#" class="item-link" onclick="window.open('https://www.freelancermap.de/registrieren')"><i class="fa fa-sign-in" aria-hidden="true"></i>&nbspJetzt registrieren</a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/template7" id="projects">
+
+                {{#each projects}}
+                {{#js_compare "this.data.show == 1"}}
+                <div class="swiper-slide">
+                    <div class="card">
+                        <div class="card-header">{{data.subject}}</div>
+                        <div class="card-content">
+                            <div class="card-content-inner">
+                                <p class="color-gray">Eingestellt:
+                                    {{data.erfasst}}
+                                </p>
+                                <p class="color-gray">Vertragsart:
+                                    {{data.vertragsart}}
+                                </p>
+                                <p class="color-gray">Start:
+                                    {{data.beginn_text}}
+                                </p>
+                                <p class="color-gray">Dauer:
+                                    {{data.dauer}}
+                                </p>
+                                <p class="color-gray">Von:
+                                    {{data.firma}}
+                                </p>
+                                <p class="color-gray">Ort:
+                                    {{data.ort}}
+                                </p>
+                                <p class="color-gray">Land:
+                                    {{data.land_name}}
+                                </p>
+
+                                <div class="list-block accordion-list">
+                                    <ul>
+                                        <li class="accordion-item">
+                                            <a href="" class="item-link item-content" onclick="showContent({{data.id}}, this)">
+                                                <div class="item-inner">
+                                                    <div class="item-title">Projektbeschreibung</div>
+                                                </div>
+                                            </a>
+                                            <div class="accordion-item-content" style="padding:0 15px">
+
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div>
+
+                        </div>
+
+                    </div>
+                    <div style="margin:10px">
+                        {{#if @global.login}}
+                        <p>
+                            {{#js_compare "this.data.show == 1"}}
+                            <span class="button button-round active apply" onclick="apply({{data.id}}, {{data.poster}}, this)"><i class="fa fa-envelope-o"></i>&nbsp;Bewerbung</span>
+                            {{/js_compare}}
+                        </p>
+                        <p>
+                        {{#if data.status}}
+                          <i class="fa fa-star"></i>{{data.status}}
+                        {{else}}
+                            <span class="button button-round active wishlist" onclick="addWishlist({{data.id}}, this)"><i class="fa fa-thumb-tack"></i>&nbsp;Merken</span>
+                        {{/if}}
+                        </p>
+
+                        {{else}}
+                           <a href="#" class="item-link" onclick="myApp.loginScreen()"><i class="fa fa-sign-in" aria-hidden="true"></i>&nbsp;Loggen Sie sich ein um sich auf dieses Projekt zu
+                               bewerben</a>
+                        {{/if}}
+
+                    </div>
+                </div>
+                {{/js_compare}}
+                {{/each}}
+    </script>
+    <script type="text/template7" id="markedList">
+        <ul>
+        {{#each lists}}
+        <li>
+            <a href="#merkliste?id={{id}}" class="item-link item-content">
+
+                <div class="item-inner">
+                    <div class="item-title">{{title}}</div>
+                </div>
+            </a>
+        </li>
+        {{/each}}
+        </ul>
+    </script>
+    <script type="text/template7" id="project">
+        <div class="card">
+            <div class="card-header">{{project.subject}}</div>
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <p class="color-gray">Eingestellt:
+                        {{project.erfasst.date}}
+                    </p>
+                    <p class="color-gray">Vertragsart:
+                        {{project.vertragsart}}
+                    </p>
+                    <p class="color-gray">Start:
+                        {{project.beginn_text}}
+                    </p>
+                    <p class="color-gray">Dauer:
+                        {{project.dauer}}
+                    </p>
+                    <p class="color-gray">Von:
+                        {{project.firma}}
+                    </p>
+                    <p class="color-gray">Ort:
+                        {{project.ort}}
+                    </p>
+                    <p class="color-gray">Land:
+                        {{project.land_name}}
+                    </p>
+
+                    <div class="list-block accordion-list">
+                        <ul>
+                            <li class="accordion-item">
+                                <a href="" class="item-link item-content" onclick="showContent({{project.id}}, this)">
+                                    <div class="item-inner">
+                                        <div class="item-title">Projektbeschreibung</div>
+                                    </div>
+                                </a>
+                                <div class="accordion-item-content" style="padding:0 15px">
+
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="margin:10px">
+            {{#js_compare "this.project.status == 0"}}
+            <span class="button button-round active apply" onclick="apply({{project.id}}, {{project.poster}}, this)"><i class="fa fa-envelope-o"></i>&nbsp;Bewerbung</span>
+            {{ else }}
+            <i class="fa fa-envelope-o"></i>&nbsp; beworben
+            {{/js_compare}}
+        </div>
+    </script>
+    <!-- Path to Framework7 Library JS-->
+    <script type="text/javascript" src="js/framework7.js"></script>
+    <!-- Path to your app js-->
+    <script type="text/javascript" src="js/welcomescreen.js"></script>
+    <script type="text/javascript" src="js/my-app.js"></script>
+
+
+  </body>
+</html>

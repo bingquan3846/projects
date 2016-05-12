@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="theme-color" content="#2196f3">
+    <title>Freelancermap</title>
+    <link rel="stylesheet" href="css/framework7.material.css">
+    <link rel="stylesheet" href="css/framework7.material.colors.css">
+    <link href="http://fonts.googleapis.com/css?family=Roboto:400,300,500,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/my-app.css">
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <link rel="icon" href="img/icon.png">
+</head>
+<body>
+<div class="statusbar-overlay"></div>
+<div class="panel-overlay"></div>
+<div class="views">
+    <div class="view view-main">
+        <div class="pages navbar-fixed">
+            <div data-page="index" class="page">
+                <div class="navbar theme-white">
+                    <div class="navbar-inner">
+                        <div class="center sliding"><img src="img/freelancermap_logo.svg" width="128" id="logo"/> </div>
+                        <div class="right">
+                            <!-- Right link contains only icon - additional "icon-only" class-->
+                            <a href="#index" onclick="showMerkliste()" id="merklistButton" class="item-link"><i class="fa fa-thumb-tack"></i></a>
+                            <a href="settings.html" class="item-link">
+                                <div class="item-content">
+                                    <div class="item-media"><i class="fa fa-cog"></i></div>
+                                </div>
+                            </a>&nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div id="swiperContent">
+                        <div data-pagination=".swiper-pagination .hidden" data-pagination-hide="true" class="swiper-container">
+                            <div class="swiper-pagination"></div>
+                                <div class="swiper-wrapper">
+
+                                </div>
+                         </div>
+                    </div>
+                    <div id="merkliste" class="list-block" style="display: none">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+     </div>
+ </div>
+<div class="login-screen">
+    <!-- Default view-page layout -->
+    <div class="view">
+        <div class="page">
+            <!-- page-content has additional login-screen content -->
+            <div class="page-content">
+                <div class="login-screen-title">Freelancermap Login</div>
+                <!-- Login form -->
+                <form>
+                    <div class="list-block inset">
+                        <ul>
+                            <li class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-input">
+                                        <input type="text" name="username" placeholder="Benutzername oder E-Mail" value="">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-input">
+                                        <input type="password" name="password" placeholder="Passwort" value="">
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="content-block">
+
+                        <a href="#" class=" pull-left button " id="notLogin">Gastzugang ohne Login</a>
+                        <a href="#" class="active pull-right button " id="login">Sign In</a>
+
+                        <a href="#" class="close-login-screen" id="login-close"></a>
+
+                    </div>
+                    <div class="content-block clear">
+                        <p>
+                            <br/>
+                            Bitte beachten Sie, dass diese App eine sinnvolle Ergänzung zu dem Onlineangebot auf unserem Portal ist. Für die bestmögliche Nutzung benötigen Sie einen kostenlosen Account auf der Plattform freelancermap und ein ausgefülltes Profil.
+                        </p>
+                    </div>
+
+                    <div class="content-block">
+                        <a href="#" class="item-link" onclick="window.open('https://www.freelancermap.de/registrieren')"><i class="fa fa-sign-in" aria-hidden="true"></i>&nbspJetzt registrieren</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/template7" id="projects">
+    {{#each projects}}
+    {{#js_compare "this.data.show == 1"}}
+    <div class="swiper-slide">
+        <div class="card">
+            <div class="card-header">{{data.subject}}</div>
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <p class="color-gray">Eingestellt:
+                        {{data.erfasst}}
+                    </p>
+                    <p class="color-gray">Vertragsart:
+                        {{data.vertragsart}}
+                    </p>
+                    <p class="color-gray">Start:
+                        {{data.beginn_text}}
+                    </p>
+                    <p class="color-gray">Dauer:
+                        {{data.dauer}}
+                    </p>
+                    <p class="color-gray">Von:
+                        {{data.firma}}
+                    </p>
+                    <p class="color-gray">Ort:
+                        {{data.ort}}
+                    </p>
+                    <p class="color-gray">Land:
+                        {{data.land_name}}
+                    </p>
+
+                    <div class="list-block accordion-list">
+                        <ul>
+                            <li class="accordion-item">
+                                <a href="" class="item-link item-content" onclick="showContent({{data.id}}, this)">
+                                    <div class="item-inner">
+                                        <div class="item-title">Projektbeschreibung</div>
+                                    </div>
+                                </a>
+                                <div class="accordion-item-content" style="padding:0 15px">
+
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            <div>
+
+            </div>
+
+        </div>
+        <div style="margin:10px">
+            {{#if @global.login}}
+            <p>
+                {{#js_compare "this.data.show == 1"}}
+                <span class="button button-round active apply" onclick="apply({{data.id}}, {{data.poster}}, this)"><i class="fa fa-envelope-o"></i>&nbsp;Bewerbung</span>
+                {{/js_compare}}
+            </p>
+            <p>
+                {{#if data.status}}
+                <i class="fa fa-star"></i>{{data.status}}
+                {{else}}
+                <span class="button button-round active wishlist" onclick="addWishlist({{data.id}}, this)"><i class="fa fa-thumb-tack"></i>&nbsp;Merken</span>
+                {{/if}}
+            </p>
+
+            {{else}}
+            <a href="#" class="item-link" onclick="myApp.loginScreen()"><i class="fa fa-sign-in" aria-hidden="true"></i>&nbsp;Loggen Sie sich ein um sich auf dieses Projekt zu
+                bewerben</a>
+            {{/if}}
+
+        </div>
+    </div>
+    {{/js_compare}}
+    {{/each}}
+</script>
+<script type="text/template7" id="markedList">
+    <ul>
+        {{#each lists}}
+        <li>
+            <a href="project.html?id={{id}}" class="item-link item-content">
+
+                <div class="item-inner">
+                    <div class="item-title">{{title}}</div>
+                </div>
+            </a>
+        </li>
+        {{/each}}
+    </ul>
+</script>
+<script type="text/template7" id="project">
+    <div class="card">
+        <div class="card-header">{{project.subject}}</div>
+        <div class="card-content">
+            <div class="card-content-inner">
+                <p class="color-gray">Eingestellt:
+                    {{project.erfasst.date}}
+                </p>
+                <p class="color-gray">Vertragsart:
+                    {{project.vertragsart}}
+                </p>
+                <p class="color-gray">Start:
+                    {{project.beginn_text}}
+                </p>
+                <p class="color-gray">Dauer:
+                    {{project.dauer}}
+                </p>
+                <p class="color-gray">Von:
+                    {{project.firma}}
+                </p>
+                <p class="color-gray">Ort:
+                    {{project.ort}}
+                </p>
+                <p class="color-gray">Land:
+                    {{project.land_name}}
+                </p>
+
+                <div class="list-block accordion-list">
+                    <ul>
+                        <li class="accordion-item">
+                            <a href="" class="item-link item-content" onclick="showContent({{project.id}}, this)">
+                                <div class="item-inner">
+                                    <div class="item-title">Projektbeschreibung</div>
+                                </div>
+                            </a>
+                            <div class="accordion-item-content" style="padding:0 15px">
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div style="margin:10px">
+        {{#js_compare "this.project.status == 0"}}
+        <span class="button button-round active apply" onclick="apply({{project.id}}, {{project.poster}}, this)"><i class="fa fa-envelope-o"></i>&nbsp;Bewerbung</span>
+        {{ else }}
+        <i class="fa fa-envelope-o"></i>&nbsp; beworben
+        {{/js_compare}}
+    </div>
+</script>
+<script type="text/javascript" src="js/framework7.js"></script>
+<script type="text/javascript" src="js/welcomescreen.js"></script>
+<script type="text/javascript" src="js/my-app.js"></script>
+</body>
+</html>
